@@ -21,14 +21,9 @@ public class GameScreen implements Screen, InputProcessor {
 							 menuRightX=105, 
 							 menuY=15,
 							 
-							 secondMenuLeftX=menuRightX+1,	// second menu
-							 secondMenuRightX=205,
-							 
-							 optionsY=menuY+45,	// options menu coords
-							 
-							 quitY=menuY+65, // quit coords
-							 
-							 restartY=menuY+25;	// restart coords
+							 optionsLeftX=menuRightX+1,	// options menu coords
+							 optionsRightX=205,
+							 optionsY=menuY+45;
 	
 	// constructor
 	public GameScreen(final Mimap gam) {
@@ -70,107 +65,52 @@ public class GameScreen implements Screen, InputProcessor {
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		
 		// menu
-		if(screenX>menuLeftX && screenX<menuRightX-10 && screenY>menuY && screenY<menuY+24) {
+		if(screenX>menuLeftX && screenX<menuRightX-10 && screenY>menuY && screenY<menuY+24)
 			if(Menu.getShowMenu()) {
 				Menu.setShowMenu(false);
 				Menu.setShowOptions(false);
-				Menu.setShowQuit(false);
-				Menu.setShowRestart(false);
 			}
-			else {
+			else
 				Menu.setShowMenu(true);
-			}
-		}
-		// restart
-		if(screenX>menuLeftX && screenX<menuRightX && screenY>menuY+25 && screenY<menuY+44) {
-			if(Menu.getShowMenu()) {
-				if(Menu.getShowRestart()) {
-					Menu.setShowRestart(false);
+			
+			// restart
+			if(screenX>menuLeftX && screenX<menuRightX && screenY>menuY+25 && screenY<menuY+44)
+				if(Menu.getShowMenu())
+					System.out.println("restart");
+			
+			// options
+			if(screenX>menuLeftX && screenX<menuRightX && screenY>menuY+45 && screenY<menuY+64)
+				if(Menu.getShowMenu())
+					if(Menu.getShowOptions())
+						Menu.setShowOptions(false);
+					else
+						Menu.setShowOptions(true);			
+				// option 1
+				if(screenX>optionsLeftX && screenX<optionsRightX && screenY>optionsY && screenY<optionsY+20) {
+					if(Menu.getShowMenu()) {
+						if(Menu.getShowOptions());
+							System.out.println("options1");
+					}
 				}
-				else {
-					Menu.setShowRestart(true);
-					Menu.setShowOptions(false);
-					Menu.setShowQuit(false);
+				// options 2
+				if(screenX>optionsLeftX && screenX<optionsRightX && screenY>optionsY+20 && screenY<optionsY+40) {
+					if(Menu.getShowMenu()) {
+						if(Menu.getShowOptions());
+							System.out.println("options2");
+					}
 				}
-			}
-		}
-		// restart confirmation
-			// no
-			if(screenX>secondMenuLeftX && screenX<secondMenuLeftX+34 && screenY>restartY+20 && screenY<restartY+40) {
-				if(Menu.getShowMenu() && Menu.getShowRestart()) {
-					Menu.setShowRestart(false);	
-				}
-			}
-			// yes
-				if(screenX>secondMenuLeftX+35 && screenX<secondMenuLeftX+70 && screenY>restartY+20 && screenY<restartY+40) {
-					if(Menu.getShowMenu() && Menu.getShowRestart()) {
-						game.setScreen(new IntroScreen(game));
-						Menu.setShowRestart(false);
-						Menu.setShowMenu(false);
-
+				// options 3
+				if(screenX>optionsLeftX && screenX<optionsRightX && screenY>optionsY+40 && screenY<optionsY+60) {
+					if(Menu.getShowMenu()) {
+						if(Menu.getShowOptions());
+							System.out.println("options3");
 					}
 				}
 			
-		// options
-		if(screenX>menuLeftX && screenX<menuRightX && screenY>optionsY && screenY<optionsY+19) {
-			if(Menu.getShowMenu()) {
-				if(Menu.getShowOptions()) {
-					Menu.setShowOptions(false);
-				}
-				else {
-					Menu.setShowOptions(true);
-					Menu.setShowRestart(false);
-					Menu.setShowQuit(false);
-				}
-			}
-		}
-		// option 1
-		if(screenX>secondMenuLeftX && screenX<secondMenuRightX && screenY>optionsY && screenY<optionsY+20) {
-			if(Menu.getShowMenu() && Menu.getShowOptions()) {
-					System.out.println("options1");
-			}
-		}
-		// options 2
-		if(screenX>secondMenuLeftX && screenX<secondMenuRightX && screenY>optionsY+20 && screenY<optionsY+40) {
-			if(Menu.getShowMenu() && Menu.getShowOptions()) {
-					System.out.println("options2");
-			}
-		}
-		// options 3
-		if(screenX>secondMenuLeftX && screenX<secondMenuRightX && screenY>optionsY+40 && screenY<optionsY+60) {
-			if(Menu.getShowMenu() && Menu.getShowOptions()) {
-					System.out.println("options3");
-			}
-		}
-		// quit
-		if(screenX>menuLeftX && screenX<menuRightX && screenY>quitY && screenY<quitY+19) {
-			if(Menu.getShowMenu()) {
-				if(Menu.getShowQuit()) {
-					Menu.setShowQuit(false);
-				}
-				else {
-					Menu.setShowQuit(true);
-					Menu.setShowRestart(false);
-					Menu.setShowOptions(false);
-				}
-			}
-		}
-		// quit confirmation:
-			// no
-				if(screenX>secondMenuLeftX && screenX<secondMenuLeftX+34 && screenY>quitY+20 && screenY<quitY+40) {
-					if(Menu.getShowMenu() && Menu.getShowQuit()) {
-						Menu.setShowQuit(false);
-				}
-			}
-			// yes
-			if(Menu.getShowMenu() && Menu.getShowQuit()) {
-				if(screenX>secondMenuLeftX+35 && screenX<secondMenuLeftX+70 && screenY>quitY+20 && screenY<quitY+40) {
-					if(Menu.getShowMenu() && Menu.getShowQuit()) {
-						Gdx.app.exit();
-					}
-				}
-			}
-		
+			// quit
+			if(screenX>menuLeftX && screenX<menuRightX && screenY>menuY+65 && screenY<menuY+84)
+				if(Menu.getShowMenu())
+					System.out.println("quit");
 		
 		return false;
 	}
@@ -182,9 +122,9 @@ public class GameScreen implements Screen, InputProcessor {
 
 	@Override
 	public void hide() {
-        Gdx.input.setInputProcessor(null);	
-        this.dispose();
+        Gdx.input.setInputProcessor(null);		
 	}
+
 	@Override
 	public void dispose() {
         Gdx.input.setInputProcessor(null);
