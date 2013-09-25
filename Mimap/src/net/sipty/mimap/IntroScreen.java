@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
 
-public class MainMenuScreen implements Screen, InputProcessor {
+public class IntroScreen implements Screen, InputProcessor {
 
 	// declarations
 	private Mimap game;
@@ -16,15 +16,15 @@ public class MainMenuScreen implements Screen, InputProcessor {
 	private Texture background;
 	
 	// constructor 
-	public MainMenuScreen(final Mimap gam) {
+	public IntroScreen(final Mimap gam) {
 		game = gam;
 		
 		// prep camera
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
+		camera.setToOrtho(false, 1280, 720);
 		
 		// load texture
-		//background = new Texture(Gdx.files.internal("background.png"));
+		background = new Texture(Gdx.files.internal("intro_background.jpg"));
 	}
 	
 	@Override
@@ -39,7 +39,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
 		
 		// batch begin
 		game.batch.begin();
-		//game.batch.draw(background, 0,0);
+		game.batch.draw(background, 0,0);
 		game.font.draw(game.batch, "Mimap", 365, 50);
 		game.font.draw(game.batch, "Press any button", 380, 25);
 		game.font.draw(game.batch, "10/10 'Better than CoD'- IGN 2013", 100, 150);
@@ -49,7 +49,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
 	
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		//game.setScreen(new SetupScreen(game));
+		game.setScreen(new GameScreen(game));
 		return false;
 	}
 

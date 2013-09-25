@@ -16,7 +16,7 @@ public class Mimap extends Game {
 		Texture.setEnforcePotImages(false);
 		batch = new SpriteBatch();
 		font = new BitmapFont();
-		this.setScreen(new MainMenuScreen(this));
+		this.setScreen(new IntroScreen(this));
 	}
 
 	@Override
@@ -30,5 +30,4 @@ public class Mimap extends Game {
 		batch.dispose();
 		font.dispose();
 	}
-
 }
