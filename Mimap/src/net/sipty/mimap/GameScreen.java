@@ -1,6 +1,7 @@
 package net.sipty.mimap;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
@@ -30,6 +31,8 @@ public class GameScreen implements Screen, InputProcessor {
 							 
 							 restartY=menuY+25;	// restart coords
 	
+	//Player player;
+	
 	// constructor
 	public GameScreen(final Mimap gam) {
 		GameScreen.game = gam;
@@ -40,8 +43,9 @@ public class GameScreen implements Screen, InputProcessor {
 		
 		// load textures
 		background = new Texture(Gdx.files.internal("intro_background.jpg"));
+		
 	}
-
+	
 	@Override
 	public void render(float delta) {
 		// gl and camera stuffs
@@ -56,18 +60,43 @@ public class GameScreen implements Screen, InputProcessor {
 			posX = Gdx.input.getX();
 			posY = Gdx.input.getY();
 			posYreversed = 720-posY;
-			game.batch.draw(background, 0,0);
 			game.font.draw(game.batch,  Integer.toString(posX)+", "+Integer.toString(posY)+" /"+Integer.toString(posYreversed), 1150, 700);
 			
-			//Menu
+			// background
+			game.batch.draw(background, 0,0);
+			// menu
 			Menu.draw();
+
+			// player
+			Player.draw();
+			
+			if(Gdx.input.isKeyPressed(Keys.DPAD_LEFT)) 
+				Player.left();
+			if(Gdx.input.isKeyPressed(Keys.DPAD_RIGHT)) 
+				Player.right();
+			if(Gdx.input.isKeyPressed(Keys.DPAD_UP)) 
+				Player.up();
+			if(Gdx.input.isKeyPressed(Keys.DPAD_DOWN)) 
+				Player.down();
+
 		// batch end
 		game.batch.end();
 				
 	}
+
+	@Override
+	public boolean keyDown(int keycode) {
+			/*
+		if(keycode==-1)
+			Player.up();
+		*/
+		return false;
+	}
 	
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		
+		Player.up();
 		
 		// menu
 		if(screenX>menuLeftX && screenX<menuRightX-10 && screenY>menuY && screenY<menuY+24) {
@@ -214,11 +243,6 @@ public class GameScreen implements Screen, InputProcessor {
 		return false;
 	}
 
-	@Override
-	public boolean keyDown(int keycode) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public boolean keyTyped(char character) {
