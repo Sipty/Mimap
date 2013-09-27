@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -31,8 +32,10 @@ public class GameScreen implements Screen, InputProcessor {
 							 
 							 restartY=menuY+25;	// restart coords
 	
-	//Player player;
-	
+	Player player = new Player();
+//FPSLogger fps = new FPSLogger();
+
+
 	// constructor
 	public GameScreen(final Mimap gam) {
 		GameScreen.game = gam;
@@ -44,6 +47,7 @@ public class GameScreen implements Screen, InputProcessor {
 		// load textures
 		background = new Texture(Gdx.files.internal("intro_background.jpg"));
 		
+		// feed it ("player_walk_left.png", 
 	}
 	
 	@Override
@@ -53,7 +57,7 @@ public class GameScreen implements Screen, InputProcessor {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		camera.update();
 		game.batch.setProjectionMatrix(camera.combined);
-		
+//fps.log();
 		// batch begin
 			game.batch.begin();
 			// mouse coords info
@@ -69,7 +73,7 @@ public class GameScreen implements Screen, InputProcessor {
 
 			// player
 			Player.draw();
-			
+			// left
 			if(Gdx.input.isKeyPressed(Keys.DPAD_LEFT)) 
 				Player.left();
 			if(Gdx.input.isKeyPressed(Keys.DPAD_RIGHT)) 
@@ -85,11 +89,18 @@ public class GameScreen implements Screen, InputProcessor {
 	}
 
 	@Override
+	public boolean keyUp(int keycode) {
+		// 19 - up arrow
+		// 20 - down arrow
+		// 21 - left arrow
+		// 22 - right arrow
+			Player.setNotMoving(true);
+
+		return false;
+	}
+	
+	@Override
 	public boolean keyDown(int keycode) {
-			/*
-		if(keycode==-1)
-			Player.up();
-		*/
 		return false;
 	}
 	
@@ -236,13 +247,6 @@ public class GameScreen implements Screen, InputProcessor {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public boolean keyUp(int keycode) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 
 	@Override
 	public boolean keyTyped(char character) {
