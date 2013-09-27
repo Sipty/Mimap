@@ -32,9 +32,9 @@ public class GameScreen implements Screen, InputProcessor {
 							 
 							 restartY=menuY+25;	// restart coords
 	
-	Player player = new Player();
 //FPSLogger fps = new FPSLogger();
 
+	private Player player = new Player();;
 
 	// constructor
 	public GameScreen(final Mimap gam) {
@@ -47,7 +47,6 @@ public class GameScreen implements Screen, InputProcessor {
 		// load textures
 		background = new Texture(Gdx.files.internal("intro_background.jpg"));
 		
-		// feed it ("player_walk_left.png", 
 	}
 	
 	@Override
@@ -71,15 +70,19 @@ public class GameScreen implements Screen, InputProcessor {
 			// menu
 			Menu.draw();
 
-			// player
-			Player.draw();
+		// Player:
+			// standing
+			Player.drawStand();
 			// left
 			if(Gdx.input.isKeyPressed(Keys.DPAD_LEFT)) 
 				Player.left();
+			// right
 			if(Gdx.input.isKeyPressed(Keys.DPAD_RIGHT)) 
 				Player.right();
+			// up
 			if(Gdx.input.isKeyPressed(Keys.DPAD_UP)) 
 				Player.up();
+			// down
 			if(Gdx.input.isKeyPressed(Keys.DPAD_DOWN)) 
 				Player.down();
 
@@ -95,7 +98,6 @@ public class GameScreen implements Screen, InputProcessor {
 		// 21 - left arrow
 		// 22 - right arrow
 			Player.setNotMoving(true);
-
 		return false;
 	}
 	
@@ -106,8 +108,6 @@ public class GameScreen implements Screen, InputProcessor {
 	
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		
-		Player.up();
 		
 		// menu
 		if(screenX>menuLeftX && screenX<menuRightX-10 && screenY>menuY && screenY<menuY+24) {
