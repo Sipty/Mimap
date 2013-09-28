@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Mimap extends Game {
 	public SpriteBatch batch;
 	public BitmapFont font;
+	public final static int SCREEN_X=1280;
+	public final static int SCREEN_Y=720;
 	
 	@Override
 	public void create() {		

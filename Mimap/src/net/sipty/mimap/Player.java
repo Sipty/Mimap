@@ -11,11 +11,11 @@ public class Player {
 	
 	// declaration
 	private static Texture stand_left, stand_right, stand_up, stand_down;
-	private static int x, y;
 	private final static int START=500,SPEED=2;
 	private static boolean notMoving=true;
     private static Animation walk_right, walk_left, walk_up, walk_down;
     private static int side=3;
+    private static Rectangle player;
     
     private Texture sheet;             
     private TextureRegion[] frames;             
@@ -24,15 +24,21 @@ public class Player {
     
 	// constructor
 	public Player() {
-		x = START;
-		y = START;
 		
+		// create player
+		 player = new Rectangle();
+		 
+		 player.x = START;
+		 player.y = START;
+		 player.width = 32;
+		 player.height = 64;
+
+		// Load images:
 		// standing sprites
 		stand_left = new Texture(Gdx.files.internal("player_stand_left.png"));
 		stand_right = new Texture(Gdx.files.internal("player_stand_right.png"));
 		stand_up = new Texture(Gdx.files.internal("player_stand_up.png"));
 		stand_down = new Texture(Gdx.files.internal("player_stand_down.png"));
-		
 		// animations
 	    walk_left = prepAnima("player_walk_left.png", 4, 1, 0);
 	    walk_right = prepAnima("player_walk_right.png", 4, 1, 0);
@@ -43,7 +49,7 @@ public class Player {
 	// prepares the animation
     public Animation prepAnima(String file, int cols, int rows, int type) {
     		
-            sheet = new Texture(Gdx.files.internal(file));     // #9
+            sheet = new Texture(Gdx.files.internal(file));    
             TextureRegion[][] tmp = TextureRegion.split(sheet, sheet.getWidth() / cols, sheet.getHeight() / rows); 
         	
             // if the sheet's animations are one after the other
@@ -77,53 +83,61 @@ public class Player {
 		if(notMoving) {
 			switch(side) {
 			case 1:
-				GameScreen.game.batch.draw(stand_up, x, y);
+				GameScreen.game.batch.draw(stand_up, player.x, player.y);
 				break;
 			case 2:
-				GameScreen.game.batch.draw(stand_down, x, y);
+				GameScreen.game.batch.draw(stand_down, player.x, player.y);
 				break;
 			case 3:
-				GameScreen.game.batch.draw(stand_right, x, y);
+				GameScreen.game.batch.draw(stand_right, player.x, player.y);
 				break;
 			case 4:
-				GameScreen.game.batch.draw(stand_left, x, y);
+				GameScreen.game.batch.draw(stand_left, player.x, player.y);
 				break;
 			}
 		}
 	}
 	
 	// draws the animation
-    public static void drawAnima(int x, int y, Animation walk) {
+    public static void drawAnima(float x, float y, Animation walk) {
             stateTime += Gdx.graphics.getDeltaTime();                      
             currentFrame = walk.getKeyFrame(stateTime, true);      
             GameScreen.game.batch.draw(currentFrame, x, y);                        
     }
     
-	public static void up() {
-		notMoving=false;
-		side = 1;
-		drawAnima(x, y, walk_up);
-		y+=SPEED;
-	}
 	public static void down() {
 		notMoving=false;
 		side = 2;
-		drawAnima(x, y, walk_down);
-		y-=SPEED;
-	}
-	public static void right() {
-		notMoving=false;
-		side = 3;
-		drawAnima(x, y, walk_right);
-		x+=SPEED;
+		drawAnima(player.x, player.y, walk_down);
+		if(player.y>0)
+			player.y-=SPEED;
 	}
 	public static void left() {
 		notMoving=false;
 		side = 4;
-		drawAnima(x, y, walk_left);
-		x-=SPEED;
+		drawAnima(player.x, player.y, walk_left);
+		if(player.x>0)
+			player.x-=SPEED;
 	}
 
+	// NOTE: The checks for up and down keep in mind
+	// the upper and most right borders, respectively, of the player rectangle.
+	public static void up() {
+		notMoving=false;
+		side = 1;
+		drawAnima(player.x, player.y, walk_up);
+		if(player.y<((Mimap.SCREEN_Y))-player.height)
+			player.y+=SPEED;
+	}
+	public static void right() {
+		notMoving=false;
+		side = 3;
+		drawAnima(player.x, player.y, walk_right);
+		if(player.x<((Mimap.SCREEN_X)-player.width))
+			player.x+=SPEED;
+	}
+	
+	
 	// getters & setters
 	public static void setNotMoving(boolean notMoving) {
 		Player.notMoving = notMoving;
@@ -132,6 +146,12 @@ public class Player {
 	public static Animation getWalk_left() {
 		return walk_left;
 	}
-	
+
+	public static float getPlayer_X() {
+		return player.x;
+	}
+	public static float getPlayer_Y() {
+		return player.y;
+	}
 	
 }

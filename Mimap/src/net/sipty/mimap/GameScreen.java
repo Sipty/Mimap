@@ -16,7 +16,6 @@ public class GameScreen implements Screen, InputProcessor {
 	
 	public static Mimap game;
 	private OrthographicCamera camera;
-	private Texture background;
 	private int posX, posY, posYreversed;	// mouse coord info
 	
 	private final static int menuLeftX=45,	// drop down menu coords
@@ -34,7 +33,7 @@ public class GameScreen implements Screen, InputProcessor {
 	
 //FPSLogger fps = new FPSLogger();
 
-	private Player player = new Player();;
+	private Player player = new Player();
 
 	// constructor
 	public GameScreen(final Mimap gam) {
@@ -43,10 +42,6 @@ public class GameScreen implements Screen, InputProcessor {
 		//camera stuffs
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,1280,720);
-		
-		// load textures
-		background = new Texture(Gdx.files.internal("intro_background.jpg"));
-		
 	}
 	
 	@Override
@@ -63,10 +58,9 @@ public class GameScreen implements Screen, InputProcessor {
 			posX = Gdx.input.getX();
 			posY = Gdx.input.getY();
 			posYreversed = 720-posY;
-			game.font.draw(game.batch,  Integer.toString(posX)+", "+Integer.toString(posY)+" /"+Integer.toString(posYreversed), 1150, 700);
+			game.font.draw(game.batch,  "Mouse coords: "+Integer.toString(posX)+", "+Integer.toString(posY)+" /"+Integer.toString(posYreversed), 1150, 700);
+			game.font.draw(game.batch,  "Player coords: "+Float.toString(Player.getPlayer_X())+", "+Float.toString(Player.getPlayer_Y()), 1150, 680);
 			
-			// background
-			game.batch.draw(background, 0,0);
 			// menu
 			Menu.draw();
 
