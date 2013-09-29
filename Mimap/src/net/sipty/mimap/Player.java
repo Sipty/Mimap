@@ -137,7 +137,6 @@ public class Player {
 			player.x+=SPEED;
 	}
 	
-	
 	// getters & setters
 	public static void setNotMoving(boolean notMoving) {
 		Player.notMoving = notMoving;

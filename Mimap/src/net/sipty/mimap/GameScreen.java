@@ -8,6 +8,14 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
 
 
 public class GameScreen implements Screen, InputProcessor {
@@ -17,6 +25,9 @@ public class GameScreen implements Screen, InputProcessor {
 	public static Mimap game;
 	private OrthographicCamera camera;
 	private int posX, posY, posYreversed;	// mouse coord info
+
+	private OrthogonalTiledMapRenderer renderer;
+	private TiledMap map;
 	
 	private final static int menuLeftX=45,	// drop down menu coords
 							 menuRightX=105, 
@@ -35,9 +46,20 @@ public class GameScreen implements Screen, InputProcessor {
 
 	private Player player = new Player();
 
+	private Pool<Rectangle> rectPool = new Pool<Rectangle>() {
+		@Override
+		protected Rectangle newObject () {
+			return new Rectangle();
+		}
+	};
+	
 	// constructor
 	public GameScreen(final Mimap gam) {
 		GameScreen.game = gam;
+
+		// load the map, set the unit scale to 1/16 (1 unit == 16 pixels)
+		map = new TmxMapLoader().load("level1.tmx");
+		renderer = new OrthogonalTiledMapRenderer(map, 1 / 0.5f);
 		
 		//camera stuffs
 		camera = new OrthographicCamera();
@@ -49,8 +71,17 @@ public class GameScreen implements Screen, InputProcessor {
 		// gl and camera stuffs
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+		// set the camera on the player
+		camera.position.x = Player.getPlayer_X();
+		
 		camera.update();
 		game.batch.setProjectionMatrix(camera.combined);
+
+		// set the tile map rendere view based on what the
+		// camera sees and render the map
+		renderer.setView(camera);
+		renderer.render();
 //fps.log();
 		// batch begin
 			game.batch.begin();
@@ -58,8 +89,8 @@ public class GameScreen implements Screen, InputProcessor {
 			posX = Gdx.input.getX();
 			posY = Gdx.input.getY();
 			posYreversed = 720-posY;
-			game.font.draw(game.batch,  "Mouse coords: "+Integer.toString(posX)+", "+Integer.toString(posY)+" /"+Integer.toString(posYreversed), 1150, 700);
-			game.font.draw(game.batch,  "Player coords: "+Float.toString(Player.getPlayer_X())+", "+Float.toString(Player.getPlayer_Y()), 1150, 680);
+			game.font.draw(game.batch,  "Mouse coords: "+Integer.toString(posX)+", "+Integer.toString(posY)+" /"+Integer.toString(posYreversed), 1050, 700);
+			game.font.draw(game.batch,  "Player coords: "+Float.toString(Player.getPlayer_X())+", "+Float.toString(Player.getPlayer_Y()), 1050, 680);
 			
 			// menu
 			Menu.draw();
