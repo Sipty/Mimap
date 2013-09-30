@@ -69,7 +69,7 @@ public class GameScreen implements Screen, InputProcessor {
 	@Override
 	public void render(float delta) {
 		// gl and camera stuffs
-		Gdx.gl.glClearColor(0, 1f, 1, 1);
+		Gdx.gl.glClearColor(0, 1f, 1f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
 		// set the camera on the player
