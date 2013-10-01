@@ -1,7 +1,6 @@
 package net.sipty.mimap;
 
 import com.badlogic.gdx.Gdx;
-
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -61,7 +60,7 @@ public class GameScreen implements Screen, InputProcessor {
 
 		// load the map, set the unit scale to 1/16 (1 unit == 16 pixels)
 		map = new TmxMapLoader().load("level1.tmx");
-		renderer = new OrthogonalTiledMapRenderer(map, 1 / 0.5f);
+		renderer = new OrthogonalTiledMapRenderer(map, 1 / 1f);
 		
 		//camera stuffs
 		camera = new OrthographicCamera();
@@ -70,6 +69,7 @@ public class GameScreen implements Screen, InputProcessor {
 	
 	// please consider moving me to the player class
 	private void getTiles(int startX, int startY, int endX, int endY, Array<Rectangle> tiles) {
+
 		TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(1);
 		rectPool.freeAll(tiles);
 		tiles.clear();
@@ -120,6 +120,7 @@ public class GameScreen implements Screen, InputProcessor {
 		getTiles(startX, startY, endX, endY, tiles);
 		playerRect.x += Player.getVelocity();
 		for(Rectangle tile: tiles) {
+System.out.println("check check check");
 			if(playerRect.overlaps(tile)) {
 				Player.setNotMoving(true);
 				Player.setVelocity(0);
