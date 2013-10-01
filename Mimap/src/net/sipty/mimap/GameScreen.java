@@ -1,6 +1,7 @@
 package net.sipty.mimap;
 
 import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -46,6 +47,7 @@ public class GameScreen implements Screen, InputProcessor {
 
 	private Player player = new Player();
 
+	private Array<Rectangle> tiles = new Array<Rectangle>();
 	private Pool<Rectangle> rectPool = new Pool<Rectangle>() {
 		@Override
 		protected Rectangle newObject () {
@@ -66,6 +68,24 @@ public class GameScreen implements Screen, InputProcessor {
 		camera.setToOrtho(false,1280,720);
 	}
 	
+	// please consider moving me to the player class
+	private void getTiles(int startX, int startY, int endX, int endY, Array<Rectangle> tiles) {
+		TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(1);
+		rectPool.freeAll(tiles);
+		tiles.clear();
+		
+		for(int y = startY; y <= endY; y++) {
+			for(int x = startX; x <= endX; x++) {
+				Cell cell = layer.getCell(x, y);
+				if(cell != null) {
+					Rectangle rect = rectPool.obtain();
+					rect.set(x, y, 1, 1);
+					tiles.add(rect);
+				}
+			}
+		}
+	}
+	
 	@Override
 	public void render(float delta) {
 		// gl and camera stuffs
@@ -83,6 +103,32 @@ public class GameScreen implements Screen, InputProcessor {
 		renderer.setView(camera);
 		renderer.render();
 //fps.log();
+		
+		
+
+		// this should be moved to the player class
+		Rectangle playerRect = rectPool.obtain();
+		playerRect.set(Player.getPlayer_X(), Player.getPlayer_Y(), Player.player.width, Player.player.height);
+		int startX, startY, endX, endY;
+		if(Player.getVelocity() > 0) {
+			startX = endX = (int)(Player.getPlayer_X() + Player.player.width + Player.getVelocity());
+		} else {
+			startX = endX = (int)(Player.getPlayer_X() + Player.getVelocity());
+		}
+		startY = (int)(Player.getPlayer_Y());
+		endY = (int)(Player.getPlayer_Y() + Player.player.height);
+		getTiles(startX, startY, endX, endY, tiles);
+		playerRect.x += Player.getVelocity();
+		for(Rectangle tile: tiles) {
+			if(playerRect.overlaps(tile)) {
+				Player.setNotMoving(true);
+				Player.setVelocity(0);
+				System.out.println("collision");
+				break;
+			}
+		}
+		playerRect.x = Player.getPlayer_X();
+		
 		// batch begin
 			game.batch.begin();
 			// mouse coords info
@@ -123,6 +169,7 @@ public class GameScreen implements Screen, InputProcessor {
 		// 21 - left arrow
 		// 22 - right arrow
 			Player.setNotMoving(true);
+			Player.setVelocity(0);
 		return false;
 	}
 	

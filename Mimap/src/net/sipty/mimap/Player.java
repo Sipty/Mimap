@@ -14,9 +14,9 @@ public class Player {
 	private final static int START=500,SPEED=2;
 	private static boolean notMoving=true;
     private static Animation walk_right, walk_left, walk_up, walk_down;
-    private static int side=3;
-    private static Rectangle player;
+    private static int side=3, velocity;
     
+	public static Rectangle player;
     private Texture sheet;             
     private TextureRegion[] frames;             
     private static TextureRegion currentFrame;            
@@ -108,16 +108,19 @@ public class Player {
 	public static void down() {
 		notMoving=false;
 		side = 2;
+		velocity = SPEED;
 		drawAnima(player.x, player.y, walk_down);
 		if(player.y>0)
-			player.y-=SPEED;
+			player.y-=velocity;
+		
 	}
 	public static void left() {
 		notMoving=false;
 		side = 4;
+		velocity = SPEED;
 		drawAnima(player.x, player.y, walk_left);
 		if(player.x>0)
-			player.x-=SPEED;
+			player.x-=velocity;
 	}
 
 	// NOTE: The checks for up and down keep in mind
@@ -125,19 +128,31 @@ public class Player {
 	public static void up() {
 		notMoving=false;
 		side = 1;
+		velocity = SPEED;
 		drawAnima(player.x, player.y, walk_up);
 		if(player.y<((Mimap.SCREEN_Y))-player.height)
-			player.y+=SPEED;
+			player.y+=velocity;
 	}
 	public static void right() {
 		notMoving=false;
 		side = 3;
+		velocity = SPEED;
 		drawAnima(player.x, player.y, walk_right);
 		if(player.x<((Mimap.SCREEN_X)-player.width))
-			player.x+=SPEED;
+			player.x+=velocity;
 	}
 	
 	// getters & setters
+	
+	// probably wont need the following two, once migration has been completed
+    public static int getVelocity() {
+		return velocity;
+	}
+
+	public static void setVelocity(int velocity) {
+		Player.velocity = velocity;
+	}
+	
 	public static void setNotMoving(boolean notMoving) {
 		Player.notMoving = notMoving;
 	}
