@@ -83,16 +83,16 @@ public class Player {
 		if(notMoving) {
 			switch(side) {
 			case 1:
-				GameScreen.game.batch.draw(stand_up, player.x, player.y);
+				InHouseScreen.game.batch.draw(stand_up, player.x, player.y);
 				break;
 			case 2:
-				GameScreen.game.batch.draw(stand_down, player.x, player.y);
+				InHouseScreen.game.batch.draw(stand_down, player.x, player.y);
 				break;
 			case 3:
-				GameScreen.game.batch.draw(stand_right, player.x, player.y);
+				InHouseScreen.game.batch.draw(stand_right, player.x, player.y);
 				break;
 			case 4:
-				GameScreen.game.batch.draw(stand_left, player.x, player.y);
+				InHouseScreen.game.batch.draw(stand_left, player.x, player.y);
 				break;
 			}
 		}
@@ -102,7 +102,7 @@ public class Player {
     public static void drawAnima(float x, float y, Animation walk) {
             stateTime += Gdx.graphics.getDeltaTime();                      
             currentFrame = walk.getKeyFrame(stateTime, true);      
-            GameScreen.game.batch.draw(currentFrame, x, y);                        
+            InHouseScreen.game.batch.draw(currentFrame, x, y);                        
     }
     
 	public static void down() {
