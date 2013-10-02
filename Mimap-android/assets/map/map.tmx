@@ -2,6 +2,11 @@
 <map version="1.0" orientation="orthogonal" width="40" height="22" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="fantasy_tileset" tilewidth="32" tileheight="32">
   <image source="fantasy_tileset.png" width="256" height="832"/>
+  <tile id="17">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="Tile Layer 1" width="40" height="22">
   <data encoding="base64" compression="zlib">
