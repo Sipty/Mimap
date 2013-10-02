@@ -57,6 +57,8 @@ public class GameScreen implements Screen, InputProcessor {
 		renderer.setView(camera);
 		renderer. render();	// render le map
 
+		camera.position.x = Player.getX();
+		camera.position.y = Player.getY();
 		camera.update();
 		
 		// let the camera follow the koala, x-axis only
