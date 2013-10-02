@@ -60,7 +60,7 @@ public class GameScreen implements Screen, InputProcessor {
 
 		// load the map, set the unit scale to 1/16 (1 unit == 16 pixels)
 		map = new TmxMapLoader().load("level1.tmx");
-		renderer = new OrthogonalTiledMapRenderer(map, 1 / 1f);
+		renderer = new OrthogonalTiledMapRenderer(map);
 		
 		//camera stuffs
 		camera = new OrthographicCamera();
@@ -122,7 +122,6 @@ public class GameScreen implements Screen, InputProcessor {
 		for(Rectangle tile: tiles) {
 System.out.println("check check check");
 			if(playerRect.overlaps(tile)) {
-				Player.setNotMoving(true);
 				Player.setVelocity(0);
 				System.out.println("collision");
 				break;
