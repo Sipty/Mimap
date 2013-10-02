@@ -49,7 +49,7 @@ public class IntroScreen implements Screen, InputProcessor {
 	
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		game.setScreen(new GameScreen(game));
+		game.setScreen(new InHouseScreen(game));
 		return false;
 	}
 
