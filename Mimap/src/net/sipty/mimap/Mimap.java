@@ -28,8 +28,8 @@ public class Mimap extends Game {
 	
 	@Override
 	public void dispose() {
-
 		batch.dispose();
 		font.dispose();
+		super.dispose();
 	}
 }
