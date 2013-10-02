@@ -7,7 +7,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 
 public class GameScreen implements Screen, InputProcessor {
@@ -16,6 +18,8 @@ public class GameScreen implements Screen, InputProcessor {
 	
 	public static Mimap game;
 	private OrthographicCamera camera;
+	private TiledMap map;					 	// le map
+	private OrthogonalTiledMapRenderer renderer;	// map renderer
 	private int posX, posY, posYreversed;	// mouse coord info
 	
 	private final static int menuLeftX=45,	// drop down menu coords
@@ -49,17 +53,22 @@ public class GameScreen implements Screen, InputProcessor {
 		// gl and camera stuffs
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		camera.update();
 		game.batch.setProjectionMatrix(camera.combined);
+		renderer.setView(camera);
+		renderer. render();	// render le map
+
+		camera.update();
+		
+		// let the camera follow the koala, x-axis only
 //fps.log();
 		// batch begin
 			game.batch.begin();
-			// mouse coords info
+			// debugging info
 			posX = Gdx.input.getX();
 			posY = Gdx.input.getY();
 			posYreversed = 720-posY;
 			game.font.draw(game.batch,  "Mouse coords: "+Integer.toString(posX)+", "+Integer.toString(posY)+" /"+Integer.toString(posYreversed), 1050, 700);
-			game.font.draw(game.batch,  "Player coords: "+Float.toString(Player.getPlayer_X())+", "+Float.toString(Player.getPlayer_Y()), 1050, 680);
+			game.font.draw(game.batch,  "Player coords: "+Float.toString(Player.getX())+", "+Float.toString(Player.getY()), 1050, 680);
 			
 			// menu
 			Menu.draw();
@@ -212,17 +221,33 @@ public class GameScreen implements Screen, InputProcessor {
 	@Override
 	public void show() {      
 		Gdx.input.setInputProcessor(this);
+		
+		map = new TmxMapLoader().load("map/map.tmx");	// create le map
+		renderer = new OrthogonalTiledMapRenderer(map);	// feed it le map
+		
+		camera = new OrthographicCamera();
 	}
 
 	@Override
 	public void hide() {
         Gdx.input.setInputProcessor(null);	
         this.dispose();
+        dispose();
 	}
+	
+	@Override
+	public void resize(int width, int height) {
+		camera.viewportWidth = width;
+		camera.viewportHeight = height;
+		camera.update();
+	}
+	
 	@Override
 	public void dispose() {
         Gdx.input.setInputProcessor(null);
-	}
+        
+        map.dispose();
+   	}
 
 	@Override
 	public void pause() {
@@ -232,12 +257,6 @@ public class GameScreen implements Screen, InputProcessor {
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -147,10 +147,10 @@ public class Player {
 		return walk_left;
 	}
 
-	public static float getPlayer_X() {
+	public static float getX() {
 		return player.x;
 	}
-	public static float getPlayer_Y() {
+	public static float getY() {
 		return player.y;
 	}
 	

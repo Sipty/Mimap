@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="fantasy_tileset" tilewidth="32" tileheight="32">
+  <image source="fantasy_tileset.png" width="256" height="832"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt17EJwDAMBED16bz/sIEMIKKQ4A9ccZ0a/Rtsr6paAQ4ukyzkn9XHpJNudvfOyZ7kMzn7uvi+j66Tbnb3rn8gpyz6yKKPLO6PLN5XWfw/svifZ3kzY/0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAd5zN1rLr
+  </data>
+ </layer>
+</map>
