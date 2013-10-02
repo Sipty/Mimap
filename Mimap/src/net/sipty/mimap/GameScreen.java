@@ -58,8 +58,8 @@ public class GameScreen implements Screen, InputProcessor {
 			posX = Gdx.input.getX();
 			posY = Gdx.input.getY();
 			posYreversed = 720-posY;
-			game.font.draw(game.batch,  "Mouse coords: "+Integer.toString(posX)+", "+Integer.toString(posY)+" /"+Integer.toString(posYreversed), 1150, 700);
-			game.font.draw(game.batch,  "Player coords: "+Float.toString(Player.getPlayer_X())+", "+Float.toString(Player.getPlayer_Y()), 1150, 680);
+			game.font.draw(game.batch,  "Mouse coords: "+Integer.toString(posX)+", "+Integer.toString(posY)+" /"+Integer.toString(posYreversed), 1050, 700);
+			game.font.draw(game.batch,  "Player coords: "+Float.toString(Player.getPlayer_X())+", "+Float.toString(Player.getPlayer_Y()), 1050, 680);
 			
 			// menu
 			Menu.draw();
