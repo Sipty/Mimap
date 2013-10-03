@@ -112,7 +112,7 @@ public class Player {
     }
     
 
-    private static boolean collisionX, collisionY;
+    private static boolean collisionX=false, collisionY=false;
     
     // collision
     public static void collision() {
@@ -122,10 +122,29 @@ public class Player {
     	
         //reset collision detecter
         collisionX=false;
+        collisionY=false;
+        
+        // X-AXIS COLLISION:
         if(!notMoving) {
-    		collisionX = collisionLayer.getCell( (int)(getX()/tileWidth), (int)(getY()/tileHeight) ).getTile().getProperties().containsKey("blocked");
-    		if(collisionX) System.out.println("collision");
+	        // upper collision
+        		collisionX = collisionLayer.getCell( (int)(player.x/tileWidth), (int)((player.y+player.height)/(tileHeight)) ).getTile().getProperties().containsKey("blocked");
+        	// middle collision
+        	if(!collisionX)
+        		collisionX = collisionLayer.getCell( (int)(player.x/tileWidth), (int)((player.y+player.height/2)/tileHeight) ).getTile().getProperties().containsKey("blocked");
+	        // lower collision
+    		if(!collisionX)
+        		collisionX = collisionLayer.getCell( (int)(player.x/tileWidth), (int)(player.y/tileHeight) ).getTile().getProperties().containsKey("blocked");
         }
+        // RIGHT COLLISION:
+        if(!notMoving) {
+        	// upper collision
+        	// middle collision
+        	// lower collision
+        	//if(!collisionX)
+        		
+        }
+        
+        if(collisionX) System.out.println("collision");
     }
     
 	public static void down() {
