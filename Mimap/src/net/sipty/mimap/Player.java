@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -20,18 +22,22 @@ public class Player {
     private Texture sheet;             
     private TextureRegion[] frames;             
     private static TextureRegion currentFrame;            
-    private static float stateTime= 0f;                                       
+    private static float stateTime= 0f;                   
+
+    private static TiledMapTileLayer collisionLayer;
     
 	// constructor
-	public Player() {
+	public Player(TiledMapTileLayer collisionlayer) {
+		
+		// collision layer
+		Player.collisionLayer = collisionlayer;
 		
 		// create player
-		 player = new Rectangle();
-		 
-		 player.x = START;
-		 player.y = START;
-		 player.width = 32;
-		 player.height = 64;
+		player = new Rectangle();
+		player.x = START;
+		player.y = START;
+		player.width = 32;
+		player.height = 64;
 
 		// Load images:
 		// standing sprites
@@ -105,6 +111,23 @@ public class Player {
             InHouseScreen.game.batch.draw(currentFrame, x, y);                        
     }
     
+
+    private static boolean collisionX, collisionY;
+    
+    // collision
+    public static void collision() {
+    	
+        // save old position
+        float tileWidth=collisionLayer.getTileWidth(), tileHeight=collisionLayer.getTileHeight();
+    	
+        //reset collision detecter
+        collisionX=false;
+        if(!notMoving) {
+    		collisionX = collisionLayer.getCell( (int)(getX()/tileWidth), (int)(getY()/tileHeight) ).getTile().getProperties().containsKey("blocked");
+    		if(collisionX) System.out.println("collision");
+        }
+    }
+    
 	public static void down() {
 		notMoving=false;
 		side = 2;
@@ -114,9 +137,10 @@ public class Player {
 	}
 	public static void left() {
 		notMoving=false;
+		collision();
 		side = 4;
 		drawAnima(player.x, player.y, walk_left);
-		if(player.x>0)
+		if(!collisionX)
 			player.x-=SPEED;
 	}
 

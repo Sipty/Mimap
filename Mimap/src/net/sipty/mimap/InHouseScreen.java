@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
@@ -39,8 +40,8 @@ public class InHouseScreen implements Screen, InputProcessor {
 							 restartY=menuY+25;	// restart coords
 	
 //FPSLogger fps = new FPSLogger();
-
-	private Player player = new Player();
+	
+	private Player player;
 
 	// constructor
 	public InHouseScreen(final Mimap gam) {
@@ -231,6 +232,9 @@ public class InHouseScreen implements Screen, InputProcessor {
 		renderer = new OrthogonalTiledMapRenderer(map);	// feed it le map
 		
 		camera = new OrthographicCamera();
+		
+
+		player = new Player((TiledMapTileLayer) map.getLayers().get(0));
 	}
 
 	@Override
