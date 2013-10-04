@@ -13,7 +13,7 @@ public class Player {
 	
 	// declaration
 	private static Texture stand_left, stand_right, stand_up, stand_down;
-	private final static int START=500,SPEED=2;
+	private final static int START=300,SPEED=3;
 	private static boolean notMoving=true;
     private static Animation walk_right, walk_left, walk_up, walk_down;
     private static int side=3;
@@ -115,49 +115,68 @@ public class Player {
     private static boolean collisionX=false, collisionY=false;
     
     // collision
-    public static void collision() {
-    	
-        // save old position
+    public static void collision(int side) {
+        
+	        /* x axis collision
+	         * LEFT:
+        	// upper
+        	collisionX = collisionLayer.getCell( (int)(player.x/tileWidth), (int)((player.y+player.height)/(tileHeight)) ).getTile().getProperties().containsKey("blocked");
+        	// middle
+        	if(!collisionX)
+        		collisionX = collisionLayer.getCell( (int)(player.x/tileWidth), (int)((player.y+player.height/2)/tileHeight) ).getTile().getProperties().containsKey("blocked");
+        	*
+        	* RIGHT:
+        	// upper
+    		collisionX = collisionLayer.getCell( (int)((player.x+player.width)/tileWidth), (int)((player.y+player.height)/(tileHeight)) ).getTile().getProperties().containsKey("blocked");
+        	// middle
+        	if(!collisionX)
+        		collisionX = collisionLayer.getCell( (int)((player.x+player.width)/tileWidth), (int)((player.y+player.height/2)/tileHeight) ).getTile().getProperties().containsKey("blocked");
+	        *
+	        *The above block has been commented out, just in case more collision is needed.
+	        *At the time of writing 'lower' collision is not only sufficient, but also required.
+	        */
+
+        // tile info
         float tileWidth=collisionLayer.getTileWidth(), tileHeight=collisionLayer.getTileHeight();
     	
         //reset collision detecter
         collisionX=false;
         collisionY=false;
-        
+
         // X-AXIS COLLISION:
-        if(!notMoving) {
-	        // upper collision
-        		collisionX = collisionLayer.getCell( (int)(player.x/tileWidth), (int)((player.y+player.height)/(tileHeight)) ).getTile().getProperties().containsKey("blocked");
-        	// middle collision
-        	if(!collisionX)
-        		collisionX = collisionLayer.getCell( (int)(player.x/tileWidth), (int)((player.y+player.height/2)/tileHeight) ).getTile().getProperties().containsKey("blocked");
-	        // lower collision
-    		if(!collisionX)
-        		collisionX = collisionLayer.getCell( (int)(player.x/tileWidth), (int)(player.y/tileHeight) ).getTile().getProperties().containsKey("blocked");
+        // Left
+        if(!notMoving && side==4) {
+    		collisionX = collisionLayer.getCell( (int)((player.x-2)/tileWidth), (int)(player.y/tileHeight) ).getTile().getProperties().containsKey("blocked");
         }
-        // RIGHT COLLISION:
-        if(!notMoving) {
-        	// upper collision
-        	// middle collision
-        	// lower collision
-        	//if(!collisionX)
-        		
+        // Right
+        if(!notMoving && side==3) {
+    		collisionX = collisionLayer.getCell( (int)((player.x+player.width)/tileWidth), (int)(player.y/tileHeight) ).getTile().getProperties().containsKey("blocked");
         }
         
-        if(collisionX) System.out.println("collision");
+        // Y-AXIS COLLISION:
+        // Down
+        if(!notMoving && side==2) {
+    		collisionY = collisionLayer.getCell( (int)((player.x)/tileWidth), (int)((player.y-3)/tileHeight) ).getTile().getProperties().containsKey("blocked");
+        }   
+        // Up
+        if(!notMoving && side==1) {
+        	collisionY = collisionLayer.getCell( (int)((player.x)/tileWidth), (int)((player.y+10)/tileHeight) ).getTile().getProperties().containsKey("blocked");
+        }   
+        
     }
     
 	public static void down() {
 		notMoving=false;
 		side = 2;
+		collision(side);
 		drawAnima(player.x, player.y, walk_down);
-		if(player.y>0)
+		if(!collisionY)
 			player.y-=SPEED;
 	}
 	public static void left() {
 		notMoving=false;
-		collision();
 		side = 4;
+		collision(side);
 		drawAnima(player.x, player.y, walk_left);
 		if(!collisionX)
 			player.x-=SPEED;
@@ -168,15 +187,17 @@ public class Player {
 	public static void up() {
 		notMoving=false;
 		side = 1;
+		collision(side);
 		drawAnima(player.x, player.y, walk_up);
-		if(player.y<((Mimap.SCREEN_Y))-player.height)
+		if(!collisionY)
 			player.y+=SPEED;
 	}
 	public static void right() {
 		notMoving=false;
 		side = 3;
+		collision(side);
 		drawAnima(player.x, player.y, walk_right);
-		if(player.x<((Mimap.SCREEN_X)-player.width))
+		if(!collisionX)
 			player.x+=SPEED;
 	}
 	
