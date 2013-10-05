@@ -1,10 +1,10 @@
 package net.sipty.mimap;
 
 import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -41,7 +41,7 @@ public class InHouseScreen implements Screen, InputProcessor {
 	
 //FPSLogger fps = new FPSLogger();
 	
-	private Player player;
+	Player player;	// initialized in show()
 
 	// constructor
 	public InHouseScreen(final Mimap gam) {
@@ -81,19 +81,19 @@ public class InHouseScreen implements Screen, InputProcessor {
 
 		// Player:
 			// standing
-			Player.drawStand();
+			player.drawStand(Player.getX(), Player.getY(), Player.getSide());
 			// left
 			if(Gdx.input.isKeyPressed(Keys.DPAD_LEFT)) 
-				Player.left();
+				player.left();
 			// right
 			if(Gdx.input.isKeyPressed(Keys.DPAD_RIGHT)) 
-				Player.right();
+				player.right();
 			// up
 			if(Gdx.input.isKeyPressed(Keys.DPAD_UP)) 
-				Player.up();
+				player.up();
 			// down
 			if(Gdx.input.isKeyPressed(Keys.DPAD_DOWN)) 
-				Player.down();
+				player.down();
 
 		// batch end
 		game.batch.end();
@@ -232,7 +232,6 @@ public class InHouseScreen implements Screen, InputProcessor {
 		renderer = new OrthogonalTiledMapRenderer(map);	// feed it le map
 		
 		camera = new OrthographicCamera();
-		
 
 		player = new Player((TiledMapTileLayer) map.getLayers().get(0));
 	}
