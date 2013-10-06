@@ -19,7 +19,7 @@ public class Player extends Entity{
 	private static boolean notMoving=true;
     private static Side side = Side.DOWN;
 
-     static boolean collisionX=false, collisionY=false;
+    //static boolean collisionX=false, collisionY=false;
 
 	// constructor
 	public Player(TiledMapTileLayer collisionLayer) {
@@ -51,7 +51,7 @@ public class Player extends Entity{
 	public void move(Side side) {
 		notMoving = false;
 		Player.side = side;
-		collision(side, collisionX, collisionY);
+		collision(side);
 		// choose movement direction
 		switch(side) {
 		case DOWN:
