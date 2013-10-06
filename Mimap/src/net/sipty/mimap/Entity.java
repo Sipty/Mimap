@@ -18,7 +18,7 @@ public class Entity {
     
     private Rectangle entity;
     
-	private boolean notMoving;
+	private boolean notMoving, collisionX, collisionY;
 	
     private Texture sheet;             
     private TextureRegion[] frames;             
@@ -31,6 +31,8 @@ public class Entity {
 	public Entity(TiledMapTileLayer collisionlayer,
 			Rectangle entity,
 			boolean notMoving,
+			boolean collisionX,
+			boolean collisionY,
 			Side side,
 			
 			Texture stand_left,
@@ -52,6 +54,8 @@ public class Entity {
 		Entity.collisionLayer = collisionlayer;
 		this.side = side;
 		this.notMoving = notMoving;
+		this.collisionX = collisionX;
+		this.collisionY = collisionY;
 		
 		this.stand_left = stand_left;
 		this.stand_right = stand_right;
@@ -132,17 +136,21 @@ public class Entity {
     }
     
     // updates the entity's rectangle
-    protected void update(float x, float y, float width, float height) {
+    protected void update(float x, float y, float width, float height,
+    		boolean colX, boolean colY) {
     	entity.x = x;
     	entity.y = y;
     	entity.width = width;
     	entity.height = height;
+    	this.collisionX = colX;
+    	this.collisionY = colY;
+    	
     }
     
     // needed to fine tune the collision detection
     private final static int tweakY = 5;
     // collision
-    public void collision(Side side, boolean collisionX, boolean collisionY) {
+    public void collision(Side side) {
         // tile info
         float tileWidth=collisionLayer.getTileWidth(), tileHeight=collisionLayer.getTileHeight();
 
@@ -153,17 +161,17 @@ public class Entity {
         switch(side) {
             // X-AXIS COLLISION:
         	case LEFT:        	
-        		Player.collisionX = collisionLayer.getCell( (int)((entity.x-2)/tileWidth), (int)(entity.y/tileHeight) ).getTile().getProperties().containsKey("blocked");
+        		collisionX = collisionLayer.getCell( (int)((entity.x-2)/tileWidth), (int)(entity.y/tileHeight) ).getTile().getProperties().containsKey("blocked");
                 break;
         	case RIGHT:
-            		Player.collisionX = collisionLayer.getCell( (int)((entity.x+entity.width)/tileWidth), (int)(entity.y/tileHeight) ).getTile().getProperties().containsKey("blocked");
+            	collisionX = collisionLayer.getCell( (int)((entity.x+entity.width)/tileWidth), (int)(entity.y/tileHeight) ).getTile().getProperties().containsKey("blocked");
         		break;
             // Y-AXIS COLLISION:
         	case DOWN:
-            		Player.collisionY = collisionLayer.getCell( (int)((entity.x+tweakY)/tileWidth), (int)((entity.y-3)/tileHeight) ).getTile().getProperties().containsKey("blocked");
+            	collisionY = collisionLayer.getCell( (int)((entity.x+tweakY)/tileWidth), (int)((entity.y-3)/tileHeight) ).getTile().getProperties().containsKey("blocked");
         		break;
         	case UP:
-                	Player.collisionY = collisionLayer.getCell( (int)((entity.x+tweakY)/tileWidth), (int)((entity.y+10)/tileHeight) ).getTile().getProperties().containsKey("blocked");
+                collisionY = collisionLayer.getCell( (int)((entity.x+tweakY)/tileWidth), (int)((entity.y+10)/tileHeight) ).getTile().getProperties().containsKey("blocked");
                 break;	
         }
     }	

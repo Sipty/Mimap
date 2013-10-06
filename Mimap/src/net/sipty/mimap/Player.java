@@ -26,6 +26,7 @@ public class Player extends Entity{
 		super(collisionLayer,
 				player,
 				notMoving,
+				collisionX, collisionY,
 				side,
 				stand_left = new Texture(Gdx.files.internal("player_stand_left.png")),
 				stand_right = new Texture(Gdx.files.internal("player_stand_right.png")),
@@ -51,7 +52,7 @@ public class Player extends Entity{
 	public void move(Side side) {
 		notMoving = false;
 		Player.side = side;
-		collision(side, collisionX, collisionY);
+		collision(side);
 		// choose movement direction
 		switch(side) {
 		case DOWN:
@@ -76,7 +77,8 @@ public class Player extends Entity{
 			break;
 		}
 		// update the super's rectangle
-		update(player.x, player.y, player.width, player.height);
+		update(player.x, player.y, player.width, player.height,
+				collisionX, collisionY);
 	}
 	/*
 	public void down() {
