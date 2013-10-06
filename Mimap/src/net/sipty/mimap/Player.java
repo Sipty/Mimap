@@ -51,7 +51,7 @@ public class Player extends Entity{
 	public void move(Side side) {
 		notMoving = false;
 		Player.side = side;
-		collision(side, player.width, player.x, player.y, collisionX, collisionY);
+		collision(side, collisionX, collisionY);
 		// choose movement direction
 		switch(side) {
 		case DOWN:
