@@ -26,7 +26,10 @@ public class Player extends Entity{
 		super(collisionLayer,
 				player,
 				side,
-				stand_left, stand_right, stand_up, stand_down = new Texture(Gdx.files.internal("player_stand_down.png")),
+				stand_left = new Texture(Gdx.files.internal("player_stand_left.png")),
+				stand_right = new Texture(Gdx.files.internal("player_stand_right.png")),
+				stand_up = new Texture(Gdx.files.internal("player_stand_up.png")),
+				stand_down = new Texture(Gdx.files.internal("player_stand_down.png")),
 				walk_left, walk_right, walk_up, walk_down,
 				notMoving, START, SPEED, width, height);
 		
@@ -37,11 +40,6 @@ public class Player extends Entity{
 		player.height = height;
 		
 		// Load images:
-			// standing sprites
-			stand_left = new Texture(Gdx.files.internal("player_stand_left.png"));
-			stand_right = new Texture(Gdx.files.internal("player_stand_right.png"));
-			stand_up = new Texture(Gdx.files.internal("player_stand_up.png"));
-			stand_down = new Texture(Gdx.files.internal("player_stand_down.png"));
 			// animations
 		    walk_left = prepAnima("player_walk_left.png", 4, 1, 0);
 		    walk_right = prepAnima("player_walk_right.png", 4, 1, 0);
@@ -49,7 +47,37 @@ public class Player extends Entity{
 		    walk_down = prepAnima("player_walk_down.png", 2, 1, 1);
 	}
 	
-
+	public void move(Side side) {
+		notMoving = false;
+		Player.side = side;
+		collision(side, player.width, player.x, player.y, collisionX, collisionY);
+		// choose movement direction
+		switch(side) {
+		case DOWN:
+			drawAnima(player.x, player.y, walk_down);
+			if(!collisionY)
+				player.y-=SPEED;
+			break;
+		case LEFT:
+			drawAnima(player.x, player.y, walk_left);
+			if(!collisionX)
+				player.x-=SPEED;
+			break;
+		case UP:
+			drawAnima(player.x, player.y, walk_up);
+			if(!collisionY)
+				player.y+=SPEED;
+			break;
+		case RIGHT:
+			drawAnima(player.x, player.y, walk_right);
+			if(!collisionX)
+				player.x+=SPEED;
+			break;
+		}
+		// update the super's rectangle
+		update(player.x, player.y, player.width, player.height);
+	}
+	/*
 	public void down() {
 		notMoving=false;
 		side = Side.DOWN;
@@ -85,7 +113,7 @@ public class Player extends Entity{
 		if(!collisionX)
 			player.x+=SPEED;
 	}
-
+*/
 	public static void setNotMoving(boolean notMoving) {
 		Player.notMoving = notMoving;
 	}

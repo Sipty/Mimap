@@ -1,7 +1,8 @@
 package net.sipty.mimap;
 
-import com.badlogic.gdx.Gdx;
+import net.sipty.mimap.Entity.Side;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -84,16 +85,16 @@ public class InHouseScreen implements Screen, InputProcessor {
 			player.drawStand(Player.getX(), Player.getY(), Player.getSide());
 			// left
 			if(Gdx.input.isKeyPressed(Keys.DPAD_LEFT)) 
-				player.left();
+				player.move(Side.LEFT);
 			// right
 			if(Gdx.input.isKeyPressed(Keys.DPAD_RIGHT)) 
-				player.right();
+				player.move(Side.RIGHT);
 			// up
 			if(Gdx.input.isKeyPressed(Keys.DPAD_UP)) 
-				player.up();
+				player.move(Side.UP);
 			// down
 			if(Gdx.input.isKeyPressed(Keys.DPAD_DOWN)) 
-				player.down();
+				player.move(Side.DOWN);
 
 		// batch end
 		game.batch.end();

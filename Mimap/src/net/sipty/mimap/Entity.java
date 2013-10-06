@@ -108,16 +108,16 @@ public class Entity {
 		if(notMoving) {
 			switch(side) {
 			case UP: 
-				InHouseScreen.game.batch.draw(Player.stand_up, x, y);
+				InHouseScreen.game.batch.draw(stand_up, entity.x, entity.y);
 				break;
 			case DOWN:
-				InHouseScreen.game.batch.draw(stand_down, x, y);
+				InHouseScreen.game.batch.draw(stand_down, entity.x, entity.y);
 				break;
 			case RIGHT:
-				InHouseScreen.game.batch.draw(Player.stand_right, x, y);
+				InHouseScreen.game.batch.draw(stand_right, entity.x, entity.y);
 				break;
 			case LEFT:
-				InHouseScreen.game.batch.draw(Player.stand_left, x, y);
+				InHouseScreen.game.batch.draw(stand_left, entity.x, entity.y);
 				break;
 			}
 		}
@@ -130,8 +130,16 @@ public class Entity {
             InHouseScreen.game.batch.draw(currentFrame, x, y);                        
     }
     
-    private final static int tweakY = 5;
+    // updates the entity's rectangle
+    protected void update(float x, float y, float width, float height) {
+    	entity.x = x;
+    	entity.y = y;
+    	entity.width = width;
+    	entity.height = height;
+    }
     
+    // needed to fine tune the collision detection
+    private final static int tweakY = 5;
     // collision
     public void collision(Side side, float width, float x, float y, boolean collisionX, boolean collisionY) {
         // tile info
