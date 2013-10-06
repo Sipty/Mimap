@@ -25,13 +25,14 @@ public class Player extends Entity{
 	public Player(TiledMapTileLayer collisionLayer) {
 		super(collisionLayer,
 				player,
+				notMoving,
 				side,
 				stand_left = new Texture(Gdx.files.internal("player_stand_left.png")),
 				stand_right = new Texture(Gdx.files.internal("player_stand_right.png")),
 				stand_up = new Texture(Gdx.files.internal("player_stand_up.png")),
 				stand_down = new Texture(Gdx.files.internal("player_stand_down.png")),
 				walk_left, walk_right, walk_up, walk_down,
-				notMoving, START, SPEED, width, height);
+				START, SPEED, width, height);
 		
 		player = new Rectangle();
 		player.x = START;

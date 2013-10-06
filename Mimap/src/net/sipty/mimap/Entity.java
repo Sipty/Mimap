@@ -13,6 +13,7 @@ public class Entity {
 	private Texture stand_left, stand_right, stand_up, stand_down;
 	private int speed;
     protected enum Side { LEFT, RIGHT, UP, DOWN }
+    private Side side;
     private Animation walk_right, walk_left, walk_up, walk_down;
     
     private Rectangle entity;
@@ -29,7 +30,7 @@ public class Entity {
 	// constructor
 	public Entity(TiledMapTileLayer collisionlayer,
 			Rectangle entity,
-			
+			boolean notMoving,
 			Side side,
 			
 			Texture stand_left,
@@ -42,7 +43,6 @@ public class Entity {
 			Animation walk_up,
 			Animation walk_down,
 			
-			boolean notMoving,
 			int start,
 			int speed,
 			int width,
@@ -50,12 +50,8 @@ public class Entity {
 			) {
 		
 		Entity.collisionLayer = collisionlayer;
-		
-		this.entity = new Rectangle();
-		this.entity.x = start;
-		this.entity.y = start;
-		this.entity.width = width;
-		this.entity.height = height;
+		this.side = side;
+		this.notMoving = notMoving;
 		
 		this.stand_left = stand_left;
 		this.stand_right = stand_right;
@@ -68,7 +64,12 @@ public class Entity {
 		this.walk_down = walk_down;
 		
 		this.speed = speed;
-		this.notMoving = notMoving;
+		
+		this.entity = new Rectangle();
+		this.entity.x = start;
+		this.entity.y = start;
+		this.entity.width = width;
+		this.entity.height = height;
 	}
 	
 	// prepares the animation
@@ -152,9 +153,9 @@ public class Entity {
         switch(side) {
             // X-AXIS COLLISION:
         	case LEFT:
-               // if(!notMoving) {
+        	//	if(!notMoving) {
             		Player.collisionX = collisionLayer.getCell( (int)((x-2)/tileWidth), (int)(y/tileHeight) ).getTile().getProperties().containsKey("blocked");
-                //}   
+        		//}   
             		System.out.println(collisionX);
                 break;
         	case RIGHT:
