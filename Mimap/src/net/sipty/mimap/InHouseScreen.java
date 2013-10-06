@@ -1,6 +1,6 @@
 package net.sipty.mimap;
 
-import net.sipty.mimap.Entity.Side;
+import net.sipty.mimap.Entity.Direction;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -66,7 +66,6 @@ public class InHouseScreen implements Screen, InputProcessor {
 		camera.position.y = Mimap.SCREEN_Y/2;
 		camera.update();
 		
-		// let the camera follow the koala, x-axis only
 //fps.log();
 		// batch begin
 			game.batch.begin();
@@ -82,19 +81,19 @@ public class InHouseScreen implements Screen, InputProcessor {
 
 		// Player:
 			// standing
-			player.drawStand(player.getX(), player.getY(), Player.getSide());
+			player.drawStand(player.getX(), player.getY(), player.getDirection());
 			// left
 			if(Gdx.input.isKeyPressed(Keys.DPAD_LEFT)) 
-				player.move(Side.LEFT);
+				player.move(Direction.LEFT);
 			// right
 			if(Gdx.input.isKeyPressed(Keys.DPAD_RIGHT)) 
-				player.move(Side.RIGHT);
+				player.move(Direction.RIGHT);
 			// up
 			if(Gdx.input.isKeyPressed(Keys.DPAD_UP)) 
-				player.move(Side.UP);
+				player.move(Direction.UP);
 			// down
 			if(Gdx.input.isKeyPressed(Keys.DPAD_DOWN)) 
-				player.move(Side.DOWN);
+				player.move(Direction.DOWN);
 
 		// batch end
 		game.batch.end();
@@ -107,7 +106,7 @@ public class InHouseScreen implements Screen, InputProcessor {
 		// 20 - down arrow
 		// 21 - left arrow
 		// 22 - right arrow
-			Player.setNotMoving(true);
+		player.setNotMoving(true);
 		return false;
 	}
 	

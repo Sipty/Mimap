@@ -11,27 +11,25 @@ public class Entity {
 	
 	// declaration
 	private Texture stand_left, stand_right, stand_up, stand_down;
-	private int speed;
-    protected enum Side { LEFT, RIGHT, UP, DOWN }
-    private Side side;
-    private Animation walk_right, walk_left, walk_up, walk_down;
+	public Animation walk_left, walk_right, walk_up, walk_down;
+    protected enum Direction { LEFT, RIGHT, UP, DOWN }
+    protected Direction direction = Direction.DOWN;
     
     protected Rectangle entity;
     
-	private boolean notMoving;
-	protected boolean collisionX, collisionY;
+	protected boolean collisionX, collisionY, notMoving=true;
 	
-    private Texture sheet;             
-    private TextureRegion[] frames;             
+    private static Texture sheet;             
+    private static TextureRegion[] frames;             
     private TextureRegion currentFrame;            
     private float stateTime= 0f;                   
 
+    private int speed;
+    
     private static TiledMapTileLayer collisionLayer;
     
 	// constructor
 	public Entity(TiledMapTileLayer collisionlayer,
-			boolean notMoving,
-			Side side,
 			
 			Texture stand_left,
 			Texture stand_right,
@@ -43,15 +41,13 @@ public class Entity {
 			Animation walk_up,
 			Animation walk_down,
 			
-			int start,
 			int speed,
+			int start,
 			int width,
 			int height
 			) {
 		
 		Entity.collisionLayer = collisionlayer;
-		this.side = side;
-		this.notMoving = notMoving;
 		
 		this.stand_left = stand_left;
 		this.stand_right = stand_right;
@@ -62,9 +58,8 @@ public class Entity {
 		this.walk_right = walk_right;
 		this.walk_up = walk_up;
 		this.walk_down = walk_down;
-		
+		System.out.println(Integer.toString(start));
 		this.speed = speed;
-		
 		this.entity = new Rectangle();
 		this.entity.x = start;
 		this.entity.y = start;
@@ -73,8 +68,7 @@ public class Entity {
 	}
 	
 	// prepares the animation
-    public Animation prepAnima(String file, int cols, int rows, int type) {
-    		
+    public static Animation prepAnima(String file, int cols, int rows, int type) {
             sheet = new Texture(Gdx.files.internal(file));    
             TextureRegion[][] tmp = TextureRegion.split(sheet, sheet.getWidth() / cols, sheet.getHeight() / rows); 
         	
@@ -98,16 +92,14 @@ public class Entity {
 	        	frames[4] = tmp[0][3];
 	        	frames[5] = tmp[0][1];
 	        }
-	        
             Animation walk = new Animation(0.16f, frames);
-            
             return walk;
     }
 
     // draws the standing sprite
-	public void drawStand(float x, float y, Side side) {
+	public void drawStand(float x, float y, Direction direction) {
 		if(notMoving) {
-			switch(side) {
+			switch(direction) {
 			case UP: 
 				InHouseScreen.game.batch.draw(stand_up, entity.x, entity.y);
 				break;
@@ -131,18 +123,10 @@ public class Entity {
             InHouseScreen.game.batch.draw(currentFrame, x, y);                        
     }
     
-    // updates the entity's rectangle
-    protected void update(float x, float y, float width, float height) {
-    	entity.x = x;
-    	entity.y = y;
-    	entity.width = width;
-    	entity.height = height;
-    }
-    
     // needed to fine tune the collision detection
     private final static int tweakY = 5;
     // collision
-    public void collision(Side side) {
+    public void collision(Direction direction) {
         // tile info
         float tileWidth=collisionLayer.getTileWidth(), tileHeight=collisionLayer.getTileHeight();
 
@@ -150,7 +134,7 @@ public class Entity {
         collisionX=false;
         collisionY=false;
 
-        switch(side) {
+        switch(direction) {
             // X-AXIS COLLISION:
         	case LEFT:        	
         		collisionX = collisionLayer.getCell( (int)((entity.x-2)/tileWidth), (int)(entity.y/tileHeight) ).getTile().getProperties().containsKey("blocked");
@@ -168,7 +152,35 @@ public class Entity {
         }
     }	
     
-    // getters
+    public void move(Direction direction) {
+		notMoving = false;
+		this.direction = direction;
+		collision(direction);
+		// choose movement direction
+		switch(direction) {
+		case DOWN:
+			drawAnima(entity.x, entity.y, walk_down);
+			if(!collisionY)
+				entity.y-=speed;
+			break;
+		case LEFT:
+			drawAnima(entity.x, entity.y, walk_left);
+			if(!collisionX)
+				entity.x-=speed;
+			break;
+		case UP:
+			drawAnima(entity.x, entity.y, walk_up);
+			if(!collisionY)
+				entity.y+=speed;
+			break;
+		case RIGHT:
+			drawAnima(entity.x, entity.y, walk_right);
+			if(!collisionX)
+				entity.x+=speed;
+			break;
+		}
+	}
+    // getters and setters
 
 	public float getX() {
 		return entity.x;
@@ -176,4 +188,13 @@ public class Entity {
 	public float getY() {
 		return entity.y;
 	}
+
+	public Direction getDirection() {
+		return direction;
+	}
+
+	public void setNotMoving(boolean notMoving) {
+		this.notMoving = notMoving;
+	}
 }
+
