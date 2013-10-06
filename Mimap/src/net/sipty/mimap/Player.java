@@ -1,7 +1,5 @@
 package net.sipty.mimap;
 
-import net.sipty.mimap.Entity.Side;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -20,6 +18,8 @@ public class Player extends Entity{
     private static Rectangle player;
 	private static boolean notMoving=true;
     private static Side side = Side.DOWN;
+
+     static boolean collisionX=false, collisionY=false;
 
 	// constructor
 	public Player(TiledMapTileLayer collisionLayer) {
@@ -53,7 +53,7 @@ public class Player extends Entity{
 	public void down() {
 		notMoving=false;
 		side = Side.DOWN;
-		collision();
+		collision(side, player.width, player.x, player.y, collisionX, collisionY);
 		drawAnima(player.x, player.y, walk_down);
 		if(!collisionY)
 			player.y-=SPEED;
@@ -61,7 +61,7 @@ public class Player extends Entity{
 	public void left() {
 		notMoving=false;
 		side = Side.LEFT;
-		collision();
+		collision(side, player.width, player.x, player.y, collisionX, collisionY);
 		drawAnima(player.x, player.y, walk_left);
 		if(!collisionX)
 			player.x-=SPEED;
@@ -72,7 +72,7 @@ public class Player extends Entity{
 	public void up() {
 		notMoving=false;
 		side = Side.UP;
-		collision();
+		collision(side, player.width, player.x, player.y, collisionX, collisionY);
 		drawAnima(player.x, player.y, walk_up);
 		if(!collisionY)
 			player.y+=SPEED;
@@ -80,7 +80,7 @@ public class Player extends Entity{
 	public void right() {
 		notMoving=false;
 		side = Side.RIGHT;
-		collision();
+		collision(side, player.width, player.x, player.y, collisionX, collisionY);
 		drawAnima(player.x, player.y, walk_right);
 		if(!collisionX)
 			player.x+=SPEED;
