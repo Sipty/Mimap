@@ -60,7 +60,7 @@ public class Entity {
 		this.stand_left = stand_left;
 		this.stand_right = stand_right;
 		this.stand_up = stand_up;
-		this.stand_down = Player.stand_down;
+		this.stand_down = stand_down;
 		
 		this.walk_left = walk_left;
 		this.walk_right = walk_right;
@@ -111,7 +111,7 @@ public class Entity {
 				InHouseScreen.game.batch.draw(Player.stand_up, x, y);
 				break;
 			case DOWN:
-				InHouseScreen.game.batch.draw(Player.stand_down, x, y);
+				InHouseScreen.game.batch.draw(stand_down, x, y);
 				break;
 			case RIGHT:
 				InHouseScreen.game.batch.draw(Player.stand_right, x, y);

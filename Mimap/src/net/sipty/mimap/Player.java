@@ -26,7 +26,7 @@ public class Player extends Entity{
 		super(collisionLayer,
 				player,
 				side,
-				stand_left, stand_right, stand_up, stand_down,
+				stand_left, stand_right, stand_up, stand_down = new Texture(Gdx.files.internal("player_stand_down.png")),
 				walk_left, walk_right, walk_up, walk_down,
 				notMoving, START, SPEED, width, height);
 		
