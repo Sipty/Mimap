@@ -50,7 +50,7 @@ public class Player extends Entity{
 	public void move(Side side) {
 		notMoving = false;
 		Player.side = side;
-		collision(side, player.width, player.x, player.y, collisionX, collisionY);
+		collision(collisionX, collisionY);
 		// choose movement direction
 		switch(side) {
 		case DOWN:
@@ -75,7 +75,8 @@ public class Player extends Entity{
 			break;
 		}
 		// update the super's rectangle
-		update(player.x, player.y, player.width, player.height);
+		update(player.x, player.y, player.width, player.height,
+				notMoving);
 	}
 	/*
 	public void down() {
