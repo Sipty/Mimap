@@ -15,7 +15,6 @@ public class Player extends Entity{
 					  walk_up, walk_down;
     private static int START=300, SPEED=3, 
     					width=32, height=64;
-    private static Rectangle player;
 	private static boolean notMoving=true;
     private static Side side = Side.DOWN;
 
@@ -24,7 +23,6 @@ public class Player extends Entity{
 	// constructor
 	public Player(TiledMapTileLayer collisionLayer) {
 		super(collisionLayer,
-				player,
 				notMoving,
 				side,
 				stand_left = new Texture(Gdx.files.internal("player_stand_left.png")),
@@ -33,12 +31,6 @@ public class Player extends Entity{
 				stand_down = new Texture(Gdx.files.internal("player_stand_down.png")),
 				walk_left, walk_right, walk_up, walk_down,
 				START, SPEED, width, height);
-		
-		player = new Rectangle();
-		player.x = START;
-		player.y = START;
-		player.width = width;
-		player.height = height;
 		
 		// Load images:
 			// animations
@@ -55,75 +47,32 @@ public class Player extends Entity{
 		// choose movement direction
 		switch(side) {
 		case DOWN:
-			drawAnima(player.x, player.y, walk_down);
+			drawAnima(entity.x, entity.y, walk_down);
 			if(!collisionY)
-				player.y-=SPEED;
+				entity.y-=SPEED;
 			break;
 		case LEFT:
-			drawAnima(player.x, player.y, walk_left);
+			drawAnima(entity.x, entity.y, walk_left);
 			if(!collisionX)
-				player.x-=SPEED;
+				entity.x-=SPEED;
 			break;
 		case UP:
-			drawAnima(player.x, player.y, walk_up);
+			drawAnima(entity.x, entity.y, walk_up);
 			if(!collisionY)
-				player.y+=SPEED;
+				entity.y+=SPEED;
 			break;
 		case RIGHT:
-			drawAnima(player.x, player.y, walk_right);
+			drawAnima(entity.x, entity.y, walk_right);
 			if(!collisionX)
-				player.x+=SPEED;
+				entity.x+=SPEED;
 			break;
 		}
 		// update the super's rectangle
-		update(player.x, player.y, player.width, player.height);
+		update(entity.x, entity.y, entity.width, entity.height);
 	}
-	/*
-	public void down() {
-		notMoving=false;
-		side = Side.DOWN;
-		collision(side, player.width, player.x, player.y, collisionX, collisionY);
-		drawAnima(player.x, player.y, walk_down);
-		if(!collisionY)
-			player.y-=SPEED;
-	}
-	public void left() {
-		notMoving=false;
-		side = Side.LEFT;
-		collision(side, player.width, player.x, player.y, collisionX, collisionY);
-		drawAnima(player.x, player.y, walk_left);
-		if(!collisionX)
-			player.x-=SPEED;
-	}
-
-	// NOTE: The checks for up and down keep in mind
-	// the upper and most right borders, respectively, of the player rectangle.
-	public void up() {
-		notMoving=false;
-		side = Side.UP;
-		collision(side, player.width, player.x, player.y, collisionX, collisionY);
-		drawAnima(player.x, player.y, walk_up);
-		if(!collisionY)
-			player.y+=SPEED;
-	}
-	public void right() {
-		notMoving=false;
-		side = Side.RIGHT;
-		collision(side, player.width, player.x, player.y, collisionX, collisionY);
-		drawAnima(player.x, player.y, walk_right);
-		if(!collisionX)
-			player.x+=SPEED;
-	}
-*/
+	
 	public static void setNotMoving(boolean notMoving) {
 		Player.notMoving = notMoving;
-	}
-
-	public static float getX() {
-		return player.x;
-	}
-	public static float getY() {
-		return player.y;
 	}
 
 	public static Side getSide() {

@@ -16,7 +16,7 @@ public class Entity {
     private Side side;
     private Animation walk_right, walk_left, walk_up, walk_down;
     
-    private Rectangle entity;
+    protected Rectangle entity;
     
 	private boolean notMoving;
 	protected boolean collisionX, collisionY;
@@ -30,7 +30,6 @@ public class Entity {
     
 	// constructor
 	public Entity(TiledMapTileLayer collisionlayer,
-			Rectangle entity,
 			boolean notMoving,
 			Side side,
 			
@@ -168,4 +167,13 @@ public class Entity {
                 break;	
         }
     }	
+    
+    // getters
+
+	public float getX() {
+		return entity.x;
+	}
+	public float getY() {
+		return entity.y;
+	}
 }

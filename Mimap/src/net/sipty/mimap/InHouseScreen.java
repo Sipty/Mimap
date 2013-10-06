@@ -75,14 +75,14 @@ public class InHouseScreen implements Screen, InputProcessor {
 			posY = Gdx.input.getY();
 			posYreversed = 720-posY;
 			game.font.draw(game.batch,  "Mouse coords: "+Integer.toString(posX)+", "+Integer.toString(posY)+" /"+Integer.toString(posYreversed), 1050, 700);
-			game.font.draw(game.batch,  "Player coords: "+Float.toString(Player.getX())+", "+Float.toString(Player.getY()), 1050, 680);
+			game.font.draw(game.batch,  "Player coords: "+Float.toString(player.getX())+", "+Float.toString(player.getY()), 1050, 680);
 			
 			// menu
 			Menu.draw();
 
 		// Player:
 			// standing
-			player.drawStand(Player.getX(), Player.getY(), Player.getSide());
+			player.drawStand(player.getX(), player.getY(), Player.getSide());
 			// left
 			if(Gdx.input.isKeyPressed(Keys.DPAD_LEFT)) 
 				player.move(Side.LEFT);
