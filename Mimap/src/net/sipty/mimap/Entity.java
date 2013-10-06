@@ -97,7 +97,7 @@ public class Entity {
     }
 
     // draws the standing sprite
-	public void drawStand(float x, float y, Direction direction) {
+	public void drawStand(Direction direction) {
 		if(notMoving) {
 			switch(direction) {
 			case UP: 
@@ -153,6 +153,9 @@ public class Entity {
     }	
     
     public void move(Direction direction) {
+    	// it makes the movement smooth. Get it? 
+    	float smoothie = Gdx.graphics.getDeltaTime();
+    	
 		notMoving = false;
 		this.direction = direction;
 		collision(direction);
@@ -161,22 +164,22 @@ public class Entity {
 		case DOWN:
 			drawAnima(entity.x, entity.y, walk_down);
 			if(!collisionY)
-				entity.y-=speed;
+				entity.y-=smoothie*speed;
 			break;
 		case LEFT:
 			drawAnima(entity.x, entity.y, walk_left);
 			if(!collisionX)
-				entity.x-=speed;
+				entity.x-=smoothie*speed;
 			break;
 		case UP:
 			drawAnima(entity.x, entity.y, walk_up);
 			if(!collisionY)
-				entity.y+=speed;
+				entity.y+=smoothie*speed;
 			break;
 		case RIGHT:
 			drawAnima(entity.x, entity.y, walk_right);
 			if(!collisionX)
-				entity.x+=speed;
+				entity.x+=smoothie*speed;
 			break;
 		}
 	}
@@ -197,4 +200,3 @@ public class Entity {
 		this.notMoving = notMoving;
 	}
 }
-

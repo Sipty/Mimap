@@ -43,6 +43,7 @@ public class InHouseScreen implements Screen, InputProcessor {
 //FPSLogger fps = new FPSLogger();
 	
 	Player player;	// initialized in show()
+	Civilian civ;
 
 	// constructor
 	public InHouseScreen(final Mimap gam) {
@@ -79,9 +80,12 @@ public class InHouseScreen implements Screen, InputProcessor {
 			// menu
 			Menu.draw();
 
+		// Civ:
+			civ.drawStand(civ.getDirection());
+			civ.moveCiv();
 		// Player:
 			// standing
-			player.drawStand(player.getX(), player.getY(), player.getDirection());
+			player.drawStand(player.getDirection());
 			// left
 			if(Gdx.input.isKeyPressed(Keys.DPAD_LEFT)) 
 				player.move(Direction.LEFT);
@@ -234,6 +238,7 @@ public class InHouseScreen implements Screen, InputProcessor {
 		camera = new OrthographicCamera();
 
 		player = new Player((TiledMapTileLayer) map.getLayers().get(0));
+		civ = new Civilian((TiledMapTileLayer) map.getLayers().get(0));
 	}
 
 	@Override
